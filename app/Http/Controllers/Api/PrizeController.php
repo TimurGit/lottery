@@ -45,6 +45,12 @@ class PrizeController extends Controller
     public function subjectApply(Request $request)
     {
         Subject::find($request->id)->apply();
-        return 1;
+        return ['status'=>1];
+    }
+
+    public function convertBonusToMoney(BonusPrize $bonusPrize, Request $request)
+    {
+        $bonusPrize->value = $request->value;
+        return ['type'=> MoneyPrize::class, 'prize'=>$bonusPrize->convertBonusToMoney()];
     }
 }

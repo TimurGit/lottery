@@ -31869,11 +31869,45 @@ $(function () {
             },
             data: { id: $('#subject').data('prize-id') },
             success: function success(data) {
-                prizeInfo.html('Принят приз');
+                prizeInfo.html('Принят приз и будет отправлен.');
                 prizeActionBar.hide();
             }
         });
     });
+
+    $(document).on('click', '.convert-bonus-to-money', function (e) {
+        $.ajax({
+            url: '/api/convertBonusToMoney',
+            beforeSend: function beforeSend() {
+                $(this).addClass('disabled');
+            },
+            data: { value: $('#bonus').text() },
+            success: function success(data) {
+                return prizeContentAction(data);
+            }
+        });
+    });
+
+    function prizeContentAction(data) {
+        if (data.type == 'App\\Models\\BonusPrize') {
+            prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448  <span id="bonus">' + data.prize.value + '</span> \u0431\u043E\u043D\u0443\u0441\u043E\u0432');
+            prizeActionBar.html('<button class="btn btn-success transfer-bonus">Перечислить на счет лояльности</button>' + ' <button class="btn btn-success convert-bonus-to-money">Конвертировать в деньги</button>');
+        } else if (data.type == 'App\\Models\\MoneyPrize') {
+            if (data.prize.value !== 0) {
+                prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448 <span id="money">' + data.prize.value + '</span> \u0434\u043E\u043B\u043B\u0430\u0440\u043E\u0432');
+                prizeActionBar.html('<button class="btn btn-success transfer-money">Перечислить на счет в банке</button>');
+            } else {
+                prizeInfo.html('Денежный выигрыш, но денег недостаточно в банке');
+                prizeActionBar.html('');
+            }
+        } else {
+            prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448 <span id="subject" data-prize-id="' + data.prize.id + '">' + data.prize.name + '</span>');
+            prizeActionBar.html('<button type="button" class="btn btn-success prize-apply">Принять</button>');
+        }
+        prizeActionBar.append(' <button type="button" class="btn btn-warning prize-reject">Отказаться</button>');
+        prizeActionBar.show();
+        prizeInfo.removeClass('hidden');
+    }
 
     $(document).on('click', '.prize-reject', function (e) {
         prizeInfo.addClass('hidden');
@@ -31887,24 +31921,7 @@ $(function () {
                 $(this).addClass('disabled');
             },
             success: function success(data) {
-                if (data.type == 'App\\Models\\BonusPrize') {
-                    prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448  <span id="bonus">' + data.prize.value + '</span> \u0431\u043E\u043D\u0443\u0441\u043E\u0432');
-                    prizeActionBar.html('<button class="btn btn-success transfer-bonus">Перечислить на счет лояльности</button>' + ' <button class="btn btn-success convert-bonus-to-money">Конвертировать в деньги</button>');
-                } else if (data.type == 'App\\Models\\MoneyPrize') {
-                    if (data.prize.value !== 0) {
-                        prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448 <span id="money">' + data.prize.value + '</span> \u0434\u043E\u043B\u043B\u0430\u0440\u043E\u0432');
-                        prizeActionBar.html('<button class="btn btn-success transfer-money">Перечислить на счет в банке</button>');
-                    } else {
-                        prizeInfo.html('Денежный выигрыш, но денег недостаточно в банке');
-                        prizeActionBar.html('');
-                    }
-                } else {
-                    prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448 <span id="subject" data-prize-id="' + data.prize.id + '">' + data.prize.name + '</span>');
-                    prizeActionBar.html('<button type="button" class="btn btn-success prize-apply">Принять</button>');
-                }
-                prizeActionBar.append(' <button type="button" class="btn btn-warning prize-reject">Отказаться</button>');
-                prizeActionBar.show();
-                prizeInfo.removeClass('hidden');
+                return prizeContentAction(data);
             }
         });
     });
