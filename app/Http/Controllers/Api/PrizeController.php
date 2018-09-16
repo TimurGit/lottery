@@ -35,9 +35,16 @@ class PrizeController extends Controller
         $val = $request->value;
         return ['status'=>$bankContract->transferToBankAccount($account, $val)];
     }
+
     public function transferBonus(Request $request)
     {
         $val = $request->value;
         return ['status'=>BonusPrize::transferToUserAccount(\Auth::user(), $val)];
+    }
+
+    public function subjectApply(Request $request)
+    {
+        Subject::find($request->id)->apply();
+        return 1;
     }
 }

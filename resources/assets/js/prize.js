@@ -27,6 +27,24 @@ $(function() {
             }
         });
     });
+    $(document).on('click', '.prize-apply', function (e) {
+        $.ajax({
+            url: '/api/subjectApply',
+            beforeSend: function () {
+                $(this).addClass('disabled');
+            },
+            data: {id: $('#subject').data('prize-id')},
+            success: function (data) {
+                prizeInfo.html('Принят приз');
+                prizeActionBar.hide();
+            }
+        });
+    });
+
+    $(document).on('click', '.prize-reject', function (e) {
+        prizeInfo.addClass('hidden');
+        prizeActionBar.html('');
+    });
         $( ".get-prize" ).click(function(e) {
         e.preventDefault()
         $.ajax({
@@ -38,14 +56,14 @@ $(function() {
                 if (data.type=='App\\Models\\BonusPrize')
                 {
                     prizeInfo.html(`Ваш выигрыш  <span id="bonus">${data.prize.value}</span> бонусов`);
-                    prizeActionBar.html('<p><button class="btn btn-primary transfer-bonus">Перечислить на счет лояльности</button>' +
-                        ' <button class="btn btn-primary convert-bonus-to-money">Конвертировать в деньги</button></p>')
+                    prizeActionBar.html('<button class="btn btn-success transfer-bonus">Перечислить на счет лояльности</button>' +
+                        ' <button class="btn btn-success convert-bonus-to-money">Конвертировать в деньги</button>')
                 }
                 else if (data.type=='App\\Models\\MoneyPrize'){
                     if (data.prize.value!==0)
                     {
                         prizeInfo.html(`Ваш выигрыш <span id="money">${data.prize.value}</span> долларов`);
-                        prizeActionBar.html('<button class="btn btn-primary transfer-money">Перечислить на счет в банке</button>')
+                        prizeActionBar.html('<button class="btn btn-success transfer-money">Перечислить на счет в банке</button>')
                     }
                     else{
                         prizeInfo.html('Денежный выигрыш, но денег недостаточно в банке');
@@ -53,10 +71,11 @@ $(function() {
                     }
                 }
                 else{
-                    prizeInfo.html(`Ваш выигрыш ${data.prize.name}`);
-                    prizeActionBar.html('<button type="button" class="btn btn-success subject-apply ">Принять</button>' +
-                        ' <button type="button" class="btn btn-warning subject-reject">Отказаться</button>')
+                    prizeInfo.html(`Ваш выигрыш <span id="subject" data-prize-id="${data.prize.id}">${data.prize.name}</span>`);
+                    prizeActionBar.html('<button type="button" class="btn btn-success prize-apply">Принять</button>')
                 }
+                prizeActionBar.append(' <button type="button" class="btn btn-warning prize-reject">Отказаться</button>')
+                prizeActionBar.show();
                 prizeInfo.removeClass('hidden');
             }
         });

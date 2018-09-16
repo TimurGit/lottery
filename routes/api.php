@@ -19,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('prize', 'Api\PrizeController@getPrize');
 Route::get('transferToBankAccount', 'Api\PrizeController@transferToBankAccount');
 Route::get('transferBonus', 'Api\PrizeController@transferBonus');
+Route::get('subjectApply', 'Api\PrizeController@subjectApply');
