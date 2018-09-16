@@ -18,10 +18,14 @@
                         <button class="btn btn-primary get-prize">
                             Получить приз
                         </button>
-                    </p>
-                    <p class="prize-info">
 
                     </p>
+
+                        <div class="prize-info alert alert-success hidden" role="alert">
+                        </div>
+                        <div class="prize-action-bar">
+                        </div>
+
                 </div>
             </div>
         </div>

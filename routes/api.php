@@ -17,3 +17,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::get('prize', 'Api\PrizeController@getPrize');
+Route::get('transferToBankAccount', 'Api\PrizeController@transferToBankAccount');
+Route::get('transferBonus', 'Api\PrizeController@transferBonus');

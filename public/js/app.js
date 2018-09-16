@@ -31833,6 +31833,34 @@ module.exports = function spread(callback) {
 /***/ (function(module, exports) {
 
 $(function () {
+    var prizeInfo = $('.prize-info');
+    var prizeActionBar = $('.prize-action-bar');
+
+    $(document).on('click', '.transfer-money', function (e) {
+        $.ajax({
+            url: '/api/transferToBankAccount',
+            beforeSend: function beforeSend() {
+                $(this).addClass('disabled');
+            },
+            data: { value: $('#money').text() },
+            success: function success(data) {
+                prizeInfo.html('Деньги перечислены на счет в банке');
+            }
+        });
+    });
+    $(document).on('click', '.transfer-bonus', function (e) {
+        $.ajax({
+            url: '/api/transferBonus',
+            beforeSend: function beforeSend() {
+                $(this).addClass('disabled');
+            },
+            data: { value: $('#bonus').text() },
+            success: function success(data) {
+                prizeInfo.html('Деньги перечислены на счет лояльности');
+                window.location.reload();
+            }
+        });
+    });
     $(".get-prize").click(function (e) {
         e.preventDefault();
         $.ajax({
@@ -31842,12 +31870,16 @@ $(function () {
             },
             success: function success(data) {
                 if (data.type == 'App\\Models\\BonusPrize') {
-                    $('.prize-info').html('Ваш выигрыш ' + data.prize.value + ' бонусов');
+                    prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448  <span id="bonus">' + data.prize.value + '</span> \u0431\u043E\u043D\u0443\u0441\u043E\u0432');
+                    prizeActionBar.html('<p><button class="btn btn-primary transfer-bonus">Перечислить на счет лояльности</button>' + ' <button class="btn btn-primary convert-bonus-to-money">Конвертировать в деньги</button></p>');
                 } else if (data.type == 'App\\Models\\MoneyPrize') {
-                    $('.prize-info').html('Ваш выигрыш ' + data.prize.value + ' долларов');
+                    prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448 <span id="money">' + data.prize.value + '</span> \u0434\u043E\u043B\u043B\u0430\u0440\u043E\u0432');
+                    prizeActionBar.html('<button class="btn btn-primary transfer-money">Перечислить на счет в банке</button>');
                 } else {
-                    $('.prize-info').html('Ваш выигрыш ' + data.prize.name);
+                    prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448 ' + data.prize.name);
+                    prizeActionBar.html('<button type="button" class="btn btn-success subject-apply ">Принять</button>' + ' <button type="button" class="btn btn-warning subject-reject">Отказаться</button>');
                 }
+                prizeInfo.removeClass('hidden');
             }
         });
     });

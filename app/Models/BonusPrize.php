@@ -9,4 +9,10 @@ class BonusPrize extends NumberPrize
     {
         return parent::generate(10, 1000);
     }
+
+    public static function transferToUserAccount($user, $value)
+    {
+        $user->bonus += $value;
+        $user->save();
+    }
 }
