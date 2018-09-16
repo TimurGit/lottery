@@ -42,8 +42,15 @@ $(function() {
                         ' <button class="btn btn-primary convert-bonus-to-money">Конвертировать в деньги</button></p>')
                 }
                 else if (data.type=='App\\Models\\MoneyPrize'){
-                    prizeInfo.html(`Ваш выигрыш <span id="money">${data.prize.value}</span> долларов`);
-                    prizeActionBar.html('<button class="btn btn-primary transfer-money">Перечислить на счет в банке</button>')
+                    if (data.prize.value!==0)
+                    {
+                        prizeInfo.html(`Ваш выигрыш <span id="money">${data.prize.value}</span> долларов`);
+                        prizeActionBar.html('<button class="btn btn-primary transfer-money">Перечислить на счет в банке</button>')
+                    }
+                    else{
+                        prizeInfo.html('Денежный выигрыш, но денег недостаточно в банке');
+                        prizeActionBar.html('')
+                    }
                 }
                 else{
                     prizeInfo.html(`Ваш выигрыш ${data.prize.name}`);

@@ -31873,8 +31873,13 @@ $(function () {
                     prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448  <span id="bonus">' + data.prize.value + '</span> \u0431\u043E\u043D\u0443\u0441\u043E\u0432');
                     prizeActionBar.html('<p><button class="btn btn-primary transfer-bonus">Перечислить на счет лояльности</button>' + ' <button class="btn btn-primary convert-bonus-to-money">Конвертировать в деньги</button></p>');
                 } else if (data.type == 'App\\Models\\MoneyPrize') {
-                    prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448 <span id="money">' + data.prize.value + '</span> \u0434\u043E\u043B\u043B\u0430\u0440\u043E\u0432');
-                    prizeActionBar.html('<button class="btn btn-primary transfer-money">Перечислить на счет в банке</button>');
+                    if (data.prize.value !== 0) {
+                        prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448 <span id="money">' + data.prize.value + '</span> \u0434\u043E\u043B\u043B\u0430\u0440\u043E\u0432');
+                        prizeActionBar.html('<button class="btn btn-primary transfer-money">Перечислить на счет в банке</button>');
+                    } else {
+                        prizeInfo.html('Денежный выигрыш, но денег недостаточно в банке');
+                        prizeActionBar.html('');
+                    }
                 } else {
                     prizeInfo.html('\u0412\u0430\u0448 \u0432\u044B\u0438\u0433\u0440\u044B\u0448 ' + data.prize.name);
                     prizeActionBar.html('<button type="button" class="btn btn-success subject-apply ">Принять</button>' + ' <button type="button" class="btn btn-warning subject-reject">Отказаться</button>');
