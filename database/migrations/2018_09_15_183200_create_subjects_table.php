@@ -16,7 +16,7 @@ class CreateSubjectsTable extends Migration
         Schema::create('subjects', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->boolean('is_active');
+            $table->boolean('is_active')->default(1);
             $table->index('is_active');
         });
     }

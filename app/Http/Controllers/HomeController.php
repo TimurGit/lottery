@@ -28,11 +28,4 @@ class HomeController extends Controller
     {
         return view('home');
     }
-
-    public function getprize()
-    {
-        $registry= [MoneyPrize::class, BonusPrize::class, Subject::class];
-        echo "<pre>"; print_r(app($registry[rand(0,2)])->generate()); echo "</pre>";die();
-    }
-
 }
