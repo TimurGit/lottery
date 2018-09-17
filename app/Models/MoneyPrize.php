@@ -5,6 +5,14 @@ namespace App\Models;
 
 class MoneyPrize extends NumberPrize
 {
+    public function setValueAttribute($val) {
+        $this->value = $val;
+    }
+
+    public function getValueAttribute() {
+        return $this->value;
+    }
+
     public function generate($start = 1, $end = 200)
     {
         $genObj = parent::generate($start, $end);

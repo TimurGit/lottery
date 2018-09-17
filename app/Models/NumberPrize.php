@@ -11,15 +11,8 @@ namespace App\Models;
 
 abstract class NumberPrize extends Prize
 {
-    private $_value;
-
-    private function setValue($val) {
-        $this->_value = $val;
-    }
-
-    private function getValue() {
-        return $this->_value;
-    }
+    protected $appends = ['value'];
+    protected $value;
 
     public function generate($start=1, $end=200)
     {
