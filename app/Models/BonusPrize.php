@@ -20,8 +20,7 @@ class BonusPrize extends NumberPrize
 
     public function convertBonusToMoney()
     {
-        $moneyPrize = app('App\Models\MoneyPrize');
-        $moneyPrize->value = $this->value * BonusPrize::COEFFICIENT;
-        return $moneyPrize;
+        $newvalue = $this->value * BonusPrize::COEFFICIENT;
+        return $newvalue;
     }
 }

@@ -51,6 +51,8 @@ class PrizeController extends Controller
     public function convertBonusToMoney(BonusPrize $bonusPrize, Request $request)
     {
         $bonusPrize->value = $request->value;
-        return ['type'=> MoneyPrize::class, 'prize'=>$bonusPrize->convertBonusToMoney()];
+        $moneyPrize = new MoneyPrize();
+        $moneyPrize->value = $bonusPrize->convertBonusToMoney();
+        return ['type'=> MoneyPrize::class, 'prize'=>$moneyPrize];
     }
 }

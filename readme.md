@@ -12,6 +12,8 @@ $ npm i
 $ npm run prod
 ```
 
-## Usage
+##unit test 
 
-## Change log
+``` bash
+$ vendor/bin/phpunit
+```
